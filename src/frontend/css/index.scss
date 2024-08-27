@@ -1,8 +1,15 @@
+@use "dialog";
+
 :root {
-	--accent-color: #d7ebfd;
-	--accent-color-lighter: #eaf8fd;
-	--accent-color-darker: #2167d6;
-	--accent-color-darkest: #093faa;
+	--accent-color: #D7EBFD;
+	--accent-color-lighter: #EAF8FD;
+	--accent-color-darker: #C6E2FB;
+
+	--select-color: #2167D6;
+	--select-color-darker: #093FAA;
+
+	--alert-color: #BD4B3F;
+	--alert-color-darker: #a83124;
 }
 
 * {
@@ -10,11 +17,15 @@
 }
 
 button {
+	border: none;
+	border-radius: 10px;
+	padding: 0.8em 1em;
+	transition: 400ms background-color;
 	user-select: auto;
 }
 
 body {
-	background-color: rgb(239, 253, 255);
+	background-color: #EFFDFF;
 	background-repeat: no-repeat;
 	font-family: "Inter", sans-serif;
 	height: 100vh;
@@ -31,50 +42,48 @@ input {
 }
 
 input:hover {
-	border: 2px solid var(--accent-color-darker);
+	border: 2px solid var(--select-color);
 }
 
 input:focus {
-	border: 2px solid var(--accent-color-darkest);
+	border: 2px solid var(--select-color-darker);
 }
 
 button.continue {
-	background-color: var(--accent-color-darker);
-	border: none;
-	border-radius: 10px;
-	color: white;
-	padding: 0.8em 1em;
-	transition: 400ms background-color;
+	--background-color: var(--select-color);
+	--background-color-hover: var(--select-color-darker);
+	--foreground-color: white;
+
+	background-color: var(--background-color);
+	color: var(--foreground-color);
 }
 
 button.continue:hover {
-	background-color: var(--accent-color-darkest);
+	background-color: var(--background-color-hover);
 }
 
-#dialog {
-	border: 1px solid #E8E8E8;
-	border-radius: 20px;
-	box-shadow: -5px 5px 60px #CCC8;
-	display: flex;
-	flex-direction: column;
-	gap: 0.8em;
-	left: 50%;
-	padding: 5em;
-	position: absolute;
-	top: 50%;
-	transform: translate(-50%, -50%);
+button.danger {
+	--background-color: var(--alert-color);
+	--background-color-hover: var(--alert-color-darker);
+	--foreground-color: white;
 
-	p,
-	button {
-		margin-top: 1em;
-	}
-
-	input.missing {
-		outline: solid 1px #bd4b3f;
-	}
+	background-color: var(--background-color);
+	color: var(--foreground-color);
 }
 
-.alert {
-	color: #bd4b3f;
-	font-weight: bold;
+button.danger:hover {
+	background-color: var(--background-color-hover);
+}
+
+button.outline {
+	background-color: transparent;
+	border: 2px solid black;
+	color: black;
+	transition: border-color 300ms, color 300ms;
+}
+
+button.outline:hover {
+	background-color: transparent;
+	border-color: var(--background-color);
+	color: var(--background-color);
 }

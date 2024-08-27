@@ -14,10 +14,15 @@ body {
 
 .course {
 	background-color: var(--accent-color);
-	border: none;
 	border-radius: 20px;
 	box-shadow: 0 0 3em #0001;
 	padding: 3em;
+	transition: background-color 400ms, box-shadow 500ms;
+}
+
+.course:hover {
+	background-color: var(--accent-color-darker);
+	box-shadow: 0 0 3em #0002;
 }
 
 #assignments {
@@ -34,23 +39,67 @@ body {
 }
 
 .assignment-container-title,
-.assignment {
-	padding: 2em;
+.assignment > div {
+	padding: 2rem 1.4rem;
 }
 
 .assignment-container-title {
 	font-weight: bold;
+	transition: text-shadow 400ms;
+}
+
+.assignment-date-container:has(button:hover) .assignment-container-title,
+.assignment-date-container:has(#assignment-info) .assignment-container-title {
+	text-shadow: 0 0 2em #0006;
 }
 
 .assignment {
 	background-color: white;
-	border: none;
+	border-bottom: 1px solid #666;
+	border-radius: 0;
+	padding: 0;
+	transition: font-weight 400ms, background-color 300ms;
+}
+
+.assignment:nth-child(2) {
+	border-radius: 10px 10px 0 0
+}
+
+.assignment:last-child {
+	border-bottom: none;
+	border-radius: 0 0 10px 10px;
+}
+
+.assignment:nth-child(2n + 1) {
+	background-color: var(--accent-color-lighter)
+}
+
+.assignment:hover {
+	background-color: var(--accent-color);
+	font-weight: 500;
+}
+
+.assignment:has(#assignment-info) {
+	background-color: var(--accent-color-darker);
+	transition: font-weight 200ms;
+}
+
+.assignment-title {
 	display: grid;
 	grid-template-columns: auto 10em;
 }
 
-.assignment:nth-child(2n + 1) {
-	background-color: var(--accent-color-lighter);
+.assignment:has(#assignment-info) .assignment-title {
+	font-weight: bold;
+}
+
+#assignment-info {
+	align-items: center;
+	display: flex;
+	font-weight: normal;
+	flex-direction: column;
+	gap: 2rem;
+	padding-top: 2rem;
 }
 
 .description {

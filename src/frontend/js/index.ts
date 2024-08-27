@@ -12,10 +12,9 @@ import {
 } from "./authorization";
 
 function dashboardView() {
-
 	apiRequest("/api/courses").then(response => response.json()).then(async (courses: Course[]) => {
 		void import("../css/courses.scss");
-		
+
 		showCourses(courses);
 
 		const assignments: Assignment[] = [];

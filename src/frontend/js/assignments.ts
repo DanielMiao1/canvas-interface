@@ -1,6 +1,9 @@
 import { dateNumber, formatTime, timestampOf } from "./time";
+import { isHTML } from "./text";
 
 import { type Assignment } from "./api";
+
+let assignment_data: Record<string, Assignment> = {};
 
 function createTimeContainers(): HTMLElement[] {
 	const container = document.getElementById("assignments");
@@ -38,6 +41,49 @@ function createTimeContainers(): HTMLElement[] {
 	return [earlier_container, today_container, upcoming_container];
 }
 
+function collapseExpandedAssignment() {
+	const expanded_element = document.getElementById("assignment-info");
+	if (expanded_element) {
+		expanded_element.remove();
+	}
+}
+
+function renderDescriptionHTML(html: string) {
+	const description = document.getElementById("assignment-description")!;
+	description.innerHTML = html;
+}
+
+function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
+	collapseExpandedAssignment();
+
+	const data = assignment_data[assignment_element.getAttribute("data-id")!];
+
+	const info_element = document.createElement("div");
+	info_element.id = "assignment-info";
+
+	if (data.description) {
+		const description_element = document.createElement("p");
+		description_element.id = "assignment-description"
+		description_element.innerText = data.description;
+		info_element.appendChild(description_element);
+
+		if (isHTML(data.description)) {
+			const show_html = document.createElement("button");
+			show_html.classList.add("outline", "danger");
+			show_html.innerText = "Render HTML";
+
+			show_html.addEventListener("click", () => {
+				renderDescriptionHTML(data.description!);
+				show_html.remove();
+			});
+
+			info_element.appendChild(show_html);
+		}
+	}
+
+	assignment_element.appendChild(info_element);
+}
+
 export default function showAssignments(assignments: Assignment[]) {
 	const container = document.createElement("div");
 	container.id = "assignments";
@@ -52,10 +98,22 @@ export default function showAssignments(assignments: Assignment[]) {
 			continue;
 		}
 
-		console.log(assignment);
+		assignment_data[assignment.id.toString()] = assignment;
+
 		const element = document.createElement("button");
 		element.classList.add("assignment");
+		element.setAttribute("data-id", assignment.id.toString());
 		element.title = `Assignment ${assignment.id}`;
+
+		const assignment_title = document.createElement("div");
+		assignment_title.classList.add("assignment-title");
+		assignment_title.addEventListener("click", () => {
+			if (element.children.length > 1) {
+				collapseExpandedAssignment();
+			} else {
+				expandAssignmentInfo(element);
+			}
+		});
 		
 		const description_element = document.createElement("p");
 		description_element.classList.add("description");
@@ -66,14 +124,16 @@ export default function showAssignments(assignments: Assignment[]) {
 			description_element.innerText = "<No Description>";
 		}
 
-		element.appendChild(description_element);
+		assignment_title.appendChild(description_element);
 
 		const due_at_element = document.createElement("p");
 		due_at_element.classList.add("due-at");
 
 		due_at_element.innerText = formatTime(assignment.due_at);
 
-		element.appendChild(due_at_element);
+		assignment_title.appendChild(due_at_element);
+
+		element.appendChild(assignment_title);
 
 		const due_date = dateNumber(assignment.due_at);
 		const current_date = dateNumber();
