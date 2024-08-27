@@ -3,22 +3,34 @@ import {
 	getToken
 } from "./authorization";
 
-type workflow_state = "unpublished" | "available" | "completed" | "deleted";
+import getUserID from "./user";
 
-type view_type = "feed" | "wiki" | "modules" | "assignments" | "syllabus";
+export type workflow_state = (
+	"unpublished" | "available" | "completed" | "deleted"
+);
 
-type grading_type = (
+export type view_type = (
+	"feed" | "wiki" | "modules" | "assignments" | "syllabus"
+);
+
+export type grading_type = (
 	"pass_fail" | "percent" | "letter_grade" | "gpa_scale" | "points"
 );
 
-type submission_type = (
+export type assignment_submission_type = (
+	"discussion_topic" | "online_quiz" | "on_paper" | "none" | "external_tool" |
+	"online_text_entry" | "online_url" | "online_upload" | "media_recording" |
+	"student_annotation" | "not_graded"
+);
+
+export type online_submission_type = (
 	"online_text_entry" | "online_url" | "online_upload" | "online_quiz" |
 	"media_recording" | "student_annotation"
 );
 
-type late_policy_status = "late" | "missing" | "extended" | "none";
+export type late_policy_status = "late" | "missing" | "extended" | "none";
  
-type enrollment_type = (
+export type enrollment_type = (
 	"StudentEnrollment" | "TeacherEnrollment" | "TaEnrollment" |
 	"DesignerEnrollment" | "ObserverEnrollment"
 );
@@ -180,7 +192,7 @@ export interface Submission {
 	preview_url: string;
 	score: number;
 	submission_comments?: any;
-	submission_type: submission_type;
+	submission_type: online_submission_type;
 	submitted_at: string;
 	url: null | string;
 	user_id: number;
@@ -238,7 +250,7 @@ export interface Assignment {
 	integration_id?: any;
 	integration_data?: any;
 	points_possible: number;
-	submission_types: string[];
+	submission_types: assignment_submission_type[];
 	has_submitted_submissions: boolean;
 	grading_type: grading_type;
 	grading_standard_id?: any;
@@ -303,4 +315,29 @@ export default async function apiRequest(path: string) {
 			installation
 		}
 	})
+}
+
+export async function listCourses(): Promise<Course[]> {
+	const request = await apiRequest("/api/courses");
+	const data = await request.json() as Course[];
+
+	return data;
+}
+
+export async function getCourseInfo(course_id: number): Promise<Course> {
+	const request = await apiRequest(`/api/courses/${course_id}`);
+	const data = await request.json() as Course;
+
+	return data;
+}
+
+export async function assignmentsInCourse(
+	course_id: number
+): Promise<Assignment[]> {
+	const user_id = await getUserID();
+
+	const request = await apiRequest(`/api/users/${user_id}/courses/${course_id}/assignments`);
+	const data = await request.json() as Assignment[];
+
+	return data;
 }

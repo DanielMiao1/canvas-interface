@@ -93,6 +93,10 @@ body {
 	font-weight: bold;
 }
 
+.due-at {
+	text-align: right;
+}
+
 #assignment-info {
 	align-items: center;
 	display: flex;
@@ -106,6 +110,12 @@ body {
 	text-align: left;
 }
 
-.due-at {
-	text-align: right;
+.assignment-info-header {
+	display: grid;
+	grid-template-columns: auto auto;
+	width: 80%;
+}
+
+#assignment-description {
+	font-family: "JetBrains Mono", monospace;
 }

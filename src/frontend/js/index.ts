@@ -1,9 +1,8 @@
-import apiRequest from "./api";
-import getUserID from "./user";
 import showAssignments from "./assignments";
 import showCourses from "./courses";
 
 import { type Course, type Assignment } from "./api";
+import { assignmentsInCourse, listCourses } from "./api";
 
 import "../css/index.scss";
 
@@ -12,7 +11,7 @@ import {
 } from "./authorization";
 
 function dashboardView() {
-	apiRequest("/api/courses").then(response => response.json()).then(async (courses: Course[]) => {
+	listCourses().then(async (courses: Course[]) => {
 		void import("../css/courses.scss");
 
 		showCourses(courses);
@@ -20,19 +19,10 @@ function dashboardView() {
 		const assignments: Assignment[] = [];
 
 		for (const course of courses) {
-			const user_id = await getUserID();
-			const course_id = course.id;
-
-			const request = await apiRequest(
-				`/api/users/${user_id}/courses/${course_id}/assignments`
-			);
-
-			const data: Assignment[] = await request.json();
-
-			assignments.push(...data);
+			assignments.push(...await assignmentsInCourse(course.id));
 		}
 
-		showAssignments(assignments);
+		showAssignments(assignments, courses);
 	});
 }
 
