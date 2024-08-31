@@ -1,5 +1,4 @@
 import { dateNumber, formatTime, timestampOf } from "./time";
-import { getCourseInfo } from './api';
 import { isHTML, stringifyList, titleCase } from "./text";
 
 import {
@@ -65,7 +64,7 @@ function formatSubmissionType(
 		if (formats.length >= 10) {
 			result += "file upload (see tooltip for accepted formats), ";
 		} else {
-			result += `file upload (${stringifyList(formats)} accepted), `;
+			result += `file upload (accepts ${stringifyList(formats)}), `;
 		}
 	}
 
@@ -78,6 +77,30 @@ function formatSubmissionType(
 	}
 
 	return titleCase(result);
+}
+
+function ensureUnknownTimeContainer() {
+	if (!document.getElementById("unknown-time-assignment-container")) {
+		const container = document.getElementById("assignments");
+
+		const element = document.createElement("div");
+		element.id = "unknown-time-assignment-container";
+		element.classList.add("assignment-date-container");
+
+		const title = document.createElement("p");
+		title.innerText = "Unknown Due Date";
+		title.classList.add("assignment-container-title");
+		element.appendChild(title);
+
+		container?.children[1].after(element);
+	}
+}
+
+function appendUnknownTimeAssignment(assignment_element: HTMLElement) {
+	ensureUnknownTimeContainer();
+
+	const unknown_time_container = document.getElementById("unknown-time-assignment-container");
+	unknown_time_container?.appendChild(assignment_element);
 }
 
 function createTimeContainers(): HTMLElement[] {
@@ -139,23 +162,15 @@ async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
 	const info_header = document.createElement("div");
 	info_header.classList.add("assignment-info-header");
 
-	const course_id = data.course_id;
-
-	let course_name: string;
-
-	if (course_id in course_names) {
-		course_name = course_names[course_id];
-	} else {
-		const course_info = await getCourseInfo(course_id);
-		course_name = course_info.name;
-	}
+	const course_id = data.courseId;
+	const course_name = course_names[course_id];
 
 	const course_name_element = document.createElement("p");
 	course_name_element.innerText = `Course: ${course_name}`;
 	info_header.appendChild(course_name_element);
 
-	const submission_types = data.submission_types;
-	const submission_formats = data.allowed_extensions;
+	const submission_types = data.submissionTypes;
+	const submission_formats = data.allowedExtensions;
 
 	const submission_types_element = document.createElement("p");
 	submission_types_element.innerText = formatSubmissionType(
@@ -201,7 +216,7 @@ export default function showAssignments(
 	courses: Course[]
 ) {
 	for (const course of courses) {
-		course_names[course.id] = course.name;
+		course_names[course._id] = course.name;
 	}
 
 	const container = document.createElement("div");
@@ -212,17 +227,16 @@ export default function showAssignments(
 		earlier_container, today_container, upcoming_container
 	] = createTimeContainers();
 
-	for (const assignment of assignments.sort((a, b) => timestampOf(a.due_at) - timestampOf(b.due_at))) {
-		if (assignment.has_submitted_submissions) {
-			continue;
-		}
+	for (const assignment of assignments.sort((a, b) => timestampOf(a.dueAt) - timestampOf(b.dueAt))) {
+		console.log(assignment.name);
+		console.log(assignment);
 
-		assignment_data[assignment.id.toString()] = assignment;
+		assignment_data[assignment._id.toString()] = assignment;
 
 		const element = document.createElement("button");
 		element.classList.add("assignment");
-		element.setAttribute("data-id", assignment.id.toString());
-		element.title = `Assignment ${assignment.id}`;
+		element.setAttribute("data-id", assignment._id.toString());
+		element.title = `Assignment ${assignment._id}`;
 
 		const assignment_title = document.createElement("div");
 		assignment_title.classList.add("assignment-title");
@@ -248,21 +262,29 @@ export default function showAssignments(
 		const due_at_element = document.createElement("p");
 		due_at_element.classList.add("due-at");
 
-		due_at_element.innerText = formatTime(assignment.due_at);
+		if (assignment.dueAt) {
+			due_at_element.innerText = formatTime(assignment.dueAt);
+		} else {
+			due_at_element.innerText = "Unknown";
+		}
 
 		assignment_title.appendChild(due_at_element);
 
 		element.appendChild(assignment_title);
 
-		const due_date = dateNumber(assignment.due_at);
-		const current_date = dateNumber();
+		if (assignment.dueAt) {
+			const due_date = dateNumber(assignment.dueAt);
+			const current_date = dateNumber();
 
-		if (due_date < current_date) {
-			earlier_container.appendChild(element);
-		} else if (due_date === current_date) {
-			today_container.appendChild(element);
+			if (due_date < current_date) {
+				earlier_container.appendChild(element);
+			} else if (due_date === current_date) {
+				today_container.appendChild(element);
+			} else {
+				upcoming_container.appendChild(element);
+			}
 		} else {
-			upcoming_container.appendChild(element);
+			appendUnknownTimeAssignment(element);
 		}
 	}
 }

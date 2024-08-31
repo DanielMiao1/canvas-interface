@@ -62,12 +62,14 @@ body {
 }
 
 .assignment:nth-child(2) {
-	border-radius: 10px 10px 0 0
+	border-top-left-radius: 10px 10px;
+	border-top-right-radius: 10px 10px;
 }
 
 .assignment:last-child {
 	border-bottom: none;
-	border-radius: 0 0 10px 10px;
+	border-bottom-left-radius: 10px 10px;
+	border-bottom-right-radius: 10px 10px;
 }
 
 .assignment:nth-child(2n + 1) {

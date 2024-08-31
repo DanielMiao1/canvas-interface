@@ -3,8 +3,6 @@ import {
 	getToken
 } from "./authorization";
 
-import getUserID from "./user";
-
 export type workflow_state = (
 	"unpublished" | "available" | "completed" | "deleted"
 );
@@ -109,10 +107,20 @@ interface SectionNeedsGradingCount {
 }
 
 export interface BaseUser {
+	created_at?: string;
 	id: number;
+	login_id?: string;
 	name: string;
 	sortable_name: string;
 	short_name: string;
+}
+
+export interface EnrollmentGrades {
+	current_grade: number | null;
+	current_score: number | null;
+	final_grade: number | null;
+	final_score: number | null;
+	html_url: string;
 }
 
 export interface Enrollment {
@@ -142,7 +150,7 @@ export interface Enrollment {
 	last_attended_at: string;
 	total_activity_time: number;
 	html_url: string;
-	grades: any;
+	grades: EnrollmentGrades;
 	user: BaseUser;
 	override_grade: string;
 	override_score: number;
@@ -305,39 +313,20 @@ export interface Assignment {
 	workflow_state: workflow_state;
 }
 
-export default async function apiRequest(path: string) {
+export default async function apiRequest(query: string) {
 	const installation = getInstallationURL();
 	const token = getToken();
 
-	return fetch(path, {
+	const request = await fetch("/graphql", {
+		body: query,
 		headers: {
 			authorization: `Bearer ${token}`,
 			installation
-		}
-	})
-}
+		},
+		method: "POST"
+	});
 
-export async function listCourses(): Promise<Course[]> {
-	const request = await apiRequest("/api/courses");
-	const data = await request.json() as Course[];
-
-	return data;
-}
-
-export async function getCourseInfo(course_id: number): Promise<Course> {
-	const request = await apiRequest(`/api/courses/${course_id}`);
-	const data = await request.json() as Course;
-
-	return data;
-}
-
-export async function assignmentsInCourse(
-	course_id: number
-): Promise<Assignment[]> {
-	const user_id = await getUserID();
-
-	const request = await apiRequest(`/api/users/${user_id}/courses/${course_id}/assignments`);
-	const data = await request.json() as Assignment[];
+	const data = await request.json();
 
 	return data;
 }

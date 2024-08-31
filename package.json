@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@fastify/static": "^7.0.4",
 		"@types/node": "^22.2.0",
+		"@urql/core": "^5.0.6",
 		"fastify": "^4.28.1",
 		"sass": "^1.77.8",
 		"typescript": "^5.5.3",
