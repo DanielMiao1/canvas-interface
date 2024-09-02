@@ -61,7 +61,9 @@ function formatSubmissionType(
 	}
 
 	if (types.includes("online_upload")) {
-		if (formats.length >= 10) {
+		if (formats.length === 0) {
+			result += "file upload, ";
+		} else if (formats.length >= 10) {
 			result += "file upload (see tooltip for accepted formats), ";
 		} else {
 			result += `file upload (accepts ${stringifyList(formats)}), `;
@@ -179,8 +181,12 @@ async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
 
 	let submission_types_tooltip = `Submission methods: ${stringifyList(submission_types)}`;
 
-	if (typeof submission_formats === "object") {
-		submission_types_tooltip += `\nAccepted formats (for file uploads): ${stringifyList(submission_formats)}`
+	if (Array.isArray(submission_formats)) {
+		if (submission_formats.length > 0) {
+			submission_types_tooltip += `\nAccepted formats (for file uploads): ${stringifyList(submission_formats)}`;
+		} else {
+			submission_types_tooltip += "\nNo file formats provided";
+		}
 	}
 
 	submission_types_element.title = submission_types_tooltip;
