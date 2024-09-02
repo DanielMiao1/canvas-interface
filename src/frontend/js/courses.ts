@@ -1,3 +1,5 @@
+import scrollListener from "./scroll";
+
 import { type Course } from "./api";
 
 function createCourseElement(course: Course) {
@@ -17,6 +19,30 @@ export default function showCourses(courses: Course[]) {
 		container.id = "courses";
 		document.body.appendChild(container);
 	}
+
+	scrollListener((y: number, last_y: number) => {
+		const container = document.getElementById("courses");
+
+		if (y < last_y) {
+			if (y < 200) {
+				if (container?.classList.contains("scrolled")) {
+					container?.classList.remove("scrolled");
+				}
+
+				return;
+			}
+		}
+
+		if (y > 1) {
+			if (!container?.classList.contains("scrolled")) {
+				container?.classList.add("scrolled");
+			}
+		} else {
+			if (container?.classList.contains("scrolled")) {
+				container?.classList.remove("scrolled");
+			}
+		}
+	})
 
 	for (const course of courses) {
 		createCourseElement(course);

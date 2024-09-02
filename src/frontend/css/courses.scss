@@ -5,11 +5,19 @@ body {
 
 #courses {
 	align-items: center;
+	background: linear-gradient(to bottom, white 70%, transparent 100%);
 	display: flex;
 	font-size: 3em;
 	gap: 2em;
 	justify-content: center;
-	padding: 3em;
+	padding: 3em 0;
+	position: fixed;
+	transition: padding-top 400ms;
+	width: 100%;
+}
+
+#courses.scrolled {
+	padding-top: 1.5em;
 }
 
 .course {
@@ -29,6 +37,7 @@ body {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+	margin-top: 24rem;
 	padding-bottom: 10em;
 }
 
