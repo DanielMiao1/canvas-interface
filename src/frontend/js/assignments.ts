@@ -239,7 +239,7 @@ export default function showAssignments(
 
 		assignment_data[assignment._id.toString()] = assignment;
 
-		const element = document.createElement("button");
+		const element = document.createElement("div");
 		element.classList.add("assignment");
 		element.setAttribute("data-id", assignment._id.toString());
 		element.title = `Assignment ${assignment._id}`;

@@ -5,12 +5,11 @@ body {
 
 #courses {
 	align-items: center;
-	background: linear-gradient(to bottom, white 70%, transparent 100%);
+	background: linear-gradient(to bottom, var(--background-color) 70%, transparent 100%);
 	display: flex;
-	font-size: 3em;
-	gap: 2em;
+	gap: 5em;
 	justify-content: center;
-	padding: 3em 0;
+	padding: 9em 0;
 	position: fixed;
 	transition: padding-top 400ms;
 	width: 100%;
@@ -22,28 +21,32 @@ body {
 
 .course {
 	background-color: var(--accent-color);
-	border-radius: 20px;
-	box-shadow: 0 0 3em #0001;
-	padding: 3em;
-	transition: background-color 400ms, box-shadow 500ms;
+	border-radius: 12px;
+	font-size: 1em;
+	font-weight: 800;
+	padding: 3em 3.5em;
+	transition: background-color 400ms;
 }
 
 .course:hover {
-	background-color: var(--accent-color-darker);
-	box-shadow: 0 0 3em #0002;
+	background-color: var(--accent-color-lighter);
 }
 
 #assignments {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+	gap: 2em;
 	margin-top: 24rem;
 	padding-bottom: 10em;
 }
 
 .assignment-date-container {
+	background-color: var(--background-color-lighter);
+	border-radius: 12px;
 	display: flex;
 	flex-direction: column;
+	padding: 1.4em 1em;
 	width: min(120em, 70vw);
 }
 
@@ -57,37 +60,20 @@ body {
 	transition: text-shadow 400ms;
 }
 
-.assignment-date-container:has(button:hover) .assignment-container-title,
+.assignment-date-container:has(.assignment:hover) .assignment-container-title,
 .assignment-date-container:has(#assignment-info) .assignment-container-title {
 	text-shadow: 0 0 2em #0006;
 }
 
 .assignment {
-	background-color: white;
-	border-bottom: 1px solid #666;
-	border-radius: 0;
+	border-radius: 16px;
+	font-size: 0.9em;
 	padding: 0;
 	transition: font-weight 400ms, background-color 300ms;
 }
 
-.assignment:nth-child(2) {
-	border-top-left-radius: 10px 10px;
-	border-top-right-radius: 10px 10px;
-}
-
-.assignment:last-child {
-	border-bottom: none;
-	border-bottom-left-radius: 10px 10px;
-	border-bottom-right-radius: 10px 10px;
-}
-
-.assignment:nth-child(2n + 1) {
-	background-color: var(--accent-color-lighter)
-}
-
 .assignment:hover {
-	background-color: var(--accent-color);
-	font-weight: 500;
+	background-color: var(--accent-color-lighter);
 }
 
 .assignment:has(#assignment-info) {

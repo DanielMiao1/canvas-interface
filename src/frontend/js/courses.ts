@@ -7,7 +7,7 @@ function createCourseElement(course: Course) {
 
 	const card = document.createElement("button");
 	card.classList.add("course");
-	card.title = `Course ${course.id}`;
+	card.title = `Course ${course._id}`;
 	card.innerText = course.name;
 	
 	container?.appendChild(card);
