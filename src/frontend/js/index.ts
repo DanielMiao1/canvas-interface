@@ -9,7 +9,9 @@ import {
 } from "./views/authorization";
 
 function fileNotFoundView() {
-	void import("../css/404.scss");
+	import("../css/404.scss").catch(() => {
+		console.error("Failed to load css file");
+	});
 
 	createBackButton();
 
