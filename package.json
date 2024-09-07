@@ -9,7 +9,7 @@
 		"build-backend": "tsc -b src/backend",
 		"build-frontend": "vite build",
 		"start": "node dist/backend/index.js",
-		"lint": "npm run lint-ts; npm run lint-scss",
+		"lint": "npm run lint-ts && npm run lint-scss",
 		"lint-ts": "eslint src",
 		"lint-scss": "stylelint src/frontend/css"
 	},
