@@ -13,7 +13,7 @@ function ensureTrailingSlash(path: string) {
 async function apiRequest(
 	installation: string,
 	token: string,
-	query: string,
+	query: string
 ) {
 	const client = new Client({
 		url: `${ensureTrailingSlash(installation)}api/graphql`,
@@ -22,26 +22,29 @@ async function apiRequest(
 			return {
 				headers: {
 					authorization: token
-				},
+				}
 			};
-		},
+		}
 	});
 
 	const request = await client.query(query, {});
-	const data = request.data;
+	const data = request.data as unknown;
 
 	return data;
 }
 
 export default function registerApiHooks(server: FastifyInstance) {
 	server.post("/graphql", async (request, reply) => {
-		if (!request.headers["installation"] || !request.headers["authorization"]) {
+		const installation = request.headers.installation;
+		const token = request.headers.authorization;
+
+		if (!installation || !token) {
 			reply.status(400).send();
 		}
 
 		const data = await apiRequest(
-			request.headers["installation"] as string,
-			request.headers["authorization"],
+			installation,
+			token,
 			request.body as string
 		);
 

@@ -3,24 +3,28 @@ export function hasCredentials() {
 }
 
 export function getInstallationURL() {
-	if (!localStorage["installation"]) {
+	if (!localStorage.installation) {
 		return false;
 	}
 
-	return localStorage["installation"];
+	return localStorage.installation as string;
 }
 
 export function getToken() {
-	if (!localStorage["token"]) {
+	if (!localStorage.token) {
 		return false;
 	}
 
-	return localStorage["token"];
+	return localStorage.token as string;
 }
 
 export default async function apiRequest(query: string) {
 	const installation = getInstallationURL();
 	const token = getToken();
+
+	if (!installation || !token) {
+		return {};
+	}
 
 	const request = await fetch("/graphql", {
 		body: query,
@@ -31,7 +35,7 @@ export default async function apiRequest(query: string) {
 		method: "POST"
 	});
 
-	const data = await request.json();
+	const data = await request.json() as unknown;
 
 	return data;
 }

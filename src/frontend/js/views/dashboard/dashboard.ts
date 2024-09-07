@@ -2,44 +2,25 @@ import apiRequest from "../../api/api";
 import showAssignments from "./assignments";
 import showCourses from "./courses";
 
-import { type Course, type Assignment } from "../../api/types";
+import dashboardQuery, {
+	type AssignmentDataFragment,
+	type DashboardQueryData
+} from "../../graphql/dashboard";
 
-export default function dashboardView() {
-	apiRequest(`
-		query courseData {
-			allCourses {
-				_id
-				name
-				assignmentsConnection {
-					nodes {
-						dueAt
-						name
-						_id
-						courseId
-						submissionTypes
-						allowedExtensions
-						description
-					}
-				}
-			}
-		}
-	`).then(async (
-		data: {
-			allCourses: Course[]
-		}
-	) => {
-		void import("../../../css/courses.scss");
+export default async function dashboardView() {
+	void import("../../../css/courses.scss");
 
-		const courses = data.allCourses;
+	const data = await apiRequest(dashboardQuery) as DashboardQueryData;
 
-		showCourses(courses);
+	const courses = data.allCourses;
 
-		const assignments: Assignment[] = [];
+	showCourses(courses);
 
-		for (const course of courses) {
-			assignments.push(...course.assignmentsConnection.nodes);
-		}
+	const assignments: AssignmentDataFragment[] = [];
 
-		showAssignments(assignments, courses);
-	});
+	for (const course of courses) {
+		assignments.push(...course.assignmentsConnection.nodes);
+	}
+
+	showAssignments(assignments, courses);
 }

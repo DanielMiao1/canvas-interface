@@ -16,7 +16,7 @@ export function formatTime(time: string): string {
 
 	const weekday = weekdays[date.getDay() - 1];
 	const month = abbreviated_months[date.getMonth()];
-	const day = date.getDate();
+	const day = date.getDate().toString();
 
 	return `${weekday} ${month} ${day}`;
 }

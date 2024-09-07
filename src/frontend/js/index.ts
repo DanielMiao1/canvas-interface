@@ -5,7 +5,7 @@ import urlMatches from "./routing";
 import "../css/index.scss";
 
 import {
-	ensureAuthorized,
+	ensureAuthorized
 } from "./views/authorization";
 
 function fileNotFoundView() {
@@ -29,7 +29,9 @@ function fileNotFoundView() {
 
 if (ensureAuthorized()) {
 	if (urlMatches(/^\/$/)) {
-		dashboardView();
+		dashboardView().catch(() => {
+			console.error("Dashboard failed to load");
+		});
 	} else {
 		fileNotFoundView();
 	}

@@ -41,8 +41,8 @@ function processCredentials() {
 	}
 
 	if (credentials_are_valid) {
-		localStorage["installation"] = installation;
-		localStorage["token"] = token;
+		localStorage.installation = installation;
+		localStorage.token = token;
 		document.location.reload();
 	}
 }
@@ -70,7 +70,7 @@ export function ensureAuthorized() {
 
 	const token_input_label = document.createElement("p");
 	token_input_label.innerText = "Access token (see the guide ";
-	
+
 	const token_generation_link = document.createElement("a");
 	token_generation_link.href = "https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273";
 	token_generation_link.target = "blank_";
@@ -90,7 +90,7 @@ export function ensureAuthorized() {
 	const continue_button = document.createElement("button");
 	continue_button.innerText = "Continue";
 	continue_button.classList.add("continue");
-	
+
 	continue_button.addEventListener("click", processCredentials);
 
 	dialog.appendChild(continue_button);

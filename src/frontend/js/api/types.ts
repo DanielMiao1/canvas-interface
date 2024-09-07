@@ -11,9 +11,10 @@ export type grading_type = (
 );
 
 export type assignment_submission_type = (
-	"discussion_topic" | "online_quiz" | "on_paper" | "none" | "external_tool" |
-	"online_text_entry" | "online_url" | "online_upload" | "media_recording" |
-	"student_annotation" | "not_graded"
+	"attendance" | "basic_lti_launch" | "discussion_topic" | "external_tool" |
+	"media_recording" | "none" | "not_graded" | "on_paper" | "online_quiz" |
+	"online_text_entry" | "online_upload" | "online_url" | "student_annotation" |
+	"wiki_page"
 );
 
 export type online_submission_type = (
@@ -22,7 +23,7 @@ export type online_submission_type = (
 );
 
 export type late_policy_status = "late" | "missing" | "extended" | "none";
- 
+
 export type enrollment_type = (
 	"StudentEnrollment" | "TeacherEnrollment" | "TaEnrollment" |
 	"DesignerEnrollment" | "ObserverEnrollment"
@@ -55,7 +56,7 @@ export interface Course {
 	account_id: number;
 	root_account_id: number;
 	enrollment_term_id: number;
-	grading_periods: any;
+	grading_periods: unknown;
 	grading_standard_id: number;
 	grade_passback_setting: string;
 	created_at: string;
@@ -64,7 +65,7 @@ export interface Course {
 	locale: string;
 	enrollments?: Enrollment[] | null;
 	total_students?: number;
-	calendar: any;
+	calendar: unknown;
 	default_view: view_type;
 	syllabus_body?: string;
 	needs_grading_count?: number;
@@ -92,7 +93,7 @@ export interface Course {
 	time_zone: string;
 	blueprint?: boolean;
 	blueprint_restrictions?: Record<string, boolean>;
-	blueprint_restrictions_by_object_type?: any;
+	blueprint_restrictions_by_object_type?: unknown;
 	template?: boolean;
 }
 
@@ -149,10 +150,10 @@ export interface Enrollment {
 	user: BaseUser;
 	override_grade: string;
 	override_score: number;
-	unposted_current_grade?: any;
-	unposted_final_grade?: any;
-	unposted_current_score?: any;
-	unposted_final_score?: any;
+	unposted_current_grade?: unknown;
+	unposted_final_grade?: unknown;
+	unposted_current_score?: unknown;
+	unposted_final_score?: unknown;
 	has_grading_periods?: boolean;
 	totals_for_all_grading_periods_option?: boolean;
 	current_grading_period_title?: string;
@@ -194,7 +195,7 @@ export interface Submission {
 	html_url: string;
 	preview_url: string;
 	score: number;
-	submission_comments?: any;
+	submission_comments?: unknown;
 	submission_type: online_submission_type;
 	submitted_at: string;
 	url: null | string;
@@ -237,9 +238,9 @@ export interface Assignment {
 	max_name_length: number;
 	turnitin_enabled?: boolean;
 	vericite_enabled?: boolean;
-	turnitin_settings?: any;
+	turnitin_settings?: unknown;
 	grade_group_students_individually: boolean;
-	external_tool_tag_attributes?: any;
+	external_tool_tag_attributes?: unknown;
 	peer_reviews: boolean;
 	automatic_peer_reviews: boolean;
 	peer_review_count?: number;
@@ -250,31 +251,31 @@ export interface Assignment {
 	needs_grading_count_by_section?: SectionNeedsGradingCount[];
 	position: number;
 	post_to_sis?: boolean;
-	integration_id?: any;
-	integration_data?: any;
+	integration_id?: unknown;
+	integration_data?: unknown;
 	points_possible: number;
 	submission_types: assignment_submission_type[];
 	has_submitted_submissions: boolean;
 	grading_type: grading_type;
-	grading_standard_id?: any;
+	grading_standard_id?: unknown;
 	published: boolean;
 	unpublishable: boolean;
 	only_visible_to_overrides: boolean;
 	locked_for_user: boolean;
-	lock_info?: any;
+	lock_info?: unknown;
 	lock_explanation?: string;
 	quiz_id?: number;
 	anonymous_submissions?: boolean;
-	discussion_topic?: any;
+	discussion_topic?: unknown;
 	freeze_on_copy?: boolean;
 	frozen?: boolean;
 	frozen_attributes?: string[];
 	submission?: Submission;
 	use_rubric_for_grading?: boolean;
-	rubric_settings?: any;
-	rubric?: any;
+	rubric_settings?: unknown;
+	rubric?: unknown;
 	assignment_visibility?: number[];
-	overrides?: any;
+	overrides?: unknown;
 	omit_from_final_grade?: boolean;
 	hide_in_gradebook?: boolean;
 	moderated_grading: boolean;
@@ -286,10 +287,10 @@ export interface Assignment {
 	anonymous_grading: boolean;
 	allowed_attempts: number;
 	post_manually: boolean;
-	score_statistics?: any;
+	score_statistics?: unknown;
 	can_submit?: boolean;
 	ab_guid?: string[];
-	annotatable_attachment_id: any;
+	annotatable_attachment_id: unknown;
 	anonymize_students?: boolean;
 	require_lockdown_browser?: boolean;
 	important_dates?: boolean;

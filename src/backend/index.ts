@@ -7,7 +7,7 @@ import { fastify } from "fastify";
 import { fastifyStatic } from "@fastify/static";
 
 const server = fastify({
-	logger: process.env["NODE_ENV"] !== "production"
+	logger: process.env.NODE_ENV !== "production"
 });
 
 server.register(fastifyStatic, {

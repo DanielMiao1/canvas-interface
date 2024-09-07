@@ -2,14 +2,15 @@ import { dateNumber, formatTime, timestampOf } from "../../time";
 import { isHTML, stringifyList, titleCase } from "../../text";
 
 import {
-	type Assignment,
-	type assignment_submission_type,
-	type Course
-} from "../../api/types";
+	type AssignmentDataFragment,
+	type CourseDataFragment
+} from "../../graphql/dashboard";
 
-let assignment_data: Record<string, Assignment> = {};
+import { type assignment_submission_type } from "../../api/types";
 
-let course_names: Record<number, string> = {};
+const assignment_data: Record<string, AssignmentDataFragment> = {};
+
+const course_names: Record<string, string> = {};
 
 function formatSubmissionType(
 	types: assignment_submission_type[],
@@ -117,7 +118,7 @@ function createTimeContainers(): HTMLElement[] {
 	earlier_container.appendChild(earlier_title);
 
 	container?.appendChild(earlier_container);
-	
+
 	const today_container = document.createElement("div");
 	today_container.classList.add("assignment-date-container");
 
@@ -149,14 +150,22 @@ function collapseExpandedAssignment() {
 }
 
 function renderDescriptionHTML(html: string) {
-	const description = document.getElementById("assignment-description")!;
-	description.innerHTML = html;
+	const description = document.getElementById("assignment-description");
+
+	if (description) {
+		description.innerHTML = html;
+	}
 }
 
-async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
+function expandAssignmentInfo(assignment_element: HTMLDivElement) {
 	collapseExpandedAssignment();
 
-	const data = assignment_data[assignment_element.getAttribute("data-id")!];
+	const data_id = assignment_element.getAttribute("data-id");
+	if (!data_id) {
+		return;
+	}
+
+	const data = assignment_data[data_id];
 
 	const info_element = document.createElement("div");
 	info_element.id = "assignment-info";
@@ -196,7 +205,7 @@ async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
 
 	if (data.description) {
 		const description_element = document.createElement("p");
-		description_element.id = "assignment-description"
+		description_element.id = "assignment-description";
 		description_element.innerText = data.description;
 		info_element.appendChild(description_element);
 
@@ -206,7 +215,7 @@ async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
 			show_html.innerText = "Render HTML";
 
 			show_html.addEventListener("click", () => {
-				renderDescriptionHTML(data.description!);
+				renderDescriptionHTML(data.description);
 				show_html.remove();
 			});
 
@@ -217,9 +226,24 @@ async function expandAssignmentInfo(assignment_element: HTMLButtonElement) {
 	assignment_element.appendChild(info_element);
 }
 
+function sortAssignmentDueDate(
+	a: AssignmentDataFragment,
+	b: AssignmentDataFragment
+) {
+	if (!a.dueAt) {
+		return 1;
+	}
+
+	if (!b.dueAt) {
+		return -1;
+	}
+
+	return timestampOf(a.dueAt) - timestampOf(b.dueAt);
+}
+
 export default function showAssignments(
-	assignments: Assignment[],
-	courses: Course[]
+	assignments: AssignmentDataFragment[],
+	courses: CourseDataFragment[]
 ) {
 	for (const course of courses) {
 		course_names[course._id] = course.name;
@@ -233,7 +257,7 @@ export default function showAssignments(
 		earlier_container, today_container, upcoming_container
 	] = createTimeContainers();
 
-	for (const assignment of assignments.sort((a, b) => timestampOf(a.dueAt) - timestampOf(b.dueAt))) {
+	for (const assignment of assignments.sort(sortAssignmentDueDate)) {
 		assignment_data[assignment._id.toString()] = assignment;
 
 		const element = document.createElement("div");
@@ -243,14 +267,14 @@ export default function showAssignments(
 
 		const assignment_title = document.createElement("div");
 		assignment_title.classList.add("assignment-title");
-		assignment_title.addEventListener("click", async () => {
+		assignment_title.addEventListener("click", () => {
 			if (element.children.length > 1) {
 				collapseExpandedAssignment();
 			} else {
-				await expandAssignmentInfo(element);
+				expandAssignmentInfo(element);
 			}
 		});
-		
+
 		const description_element = document.createElement("p");
 		description_element.classList.add("description");
 
