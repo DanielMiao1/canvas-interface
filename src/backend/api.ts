@@ -35,8 +35,8 @@ async function apiRequest(
 
 export default function registerApiHooks(server: FastifyInstance) {
 	server.post("/graphql", async (request, reply) => {
-		const installation = request.headers.installation;
-		const token = request.headers.authorization;
+		const installation = request.headers.installation as string;
+		const token = request.headers.authorization as string;
 
 		if (!installation || !token) {
 			reply.status(400).send();
