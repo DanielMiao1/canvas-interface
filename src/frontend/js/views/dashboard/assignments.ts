@@ -1,11 +1,11 @@
-import { dateNumber, formatTime, timestampOf } from "./time";
-import { isHTML, stringifyList, titleCase } from "./text";
+import { dateNumber, formatTime, timestampOf } from "../../time";
+import { isHTML, stringifyList, titleCase } from "../../text";
 
 import {
 	type Assignment,
 	type assignment_submission_type,
 	type Course
-} from "./api";
+} from "../../api/types";
 
 let assignment_data: Record<string, Assignment> = {};
 
@@ -234,9 +234,6 @@ export default function showAssignments(
 	] = createTimeContainers();
 
 	for (const assignment of assignments.sort((a, b) => timestampOf(a.dueAt) - timestampOf(b.dueAt))) {
-		console.log(assignment.name);
-		console.log(assignment);
-
 		assignment_data[assignment._id.toString()] = assignment;
 
 		const element = document.createElement("div");

@@ -1,8 +1,3 @@
-import {
-	getInstallationURL,
-	getToken
-} from "./authorization";
-
 export type workflow_state = (
 	"unpublished" | "available" | "completed" | "deleted"
 );
@@ -311,22 +306,4 @@ export interface Assignment {
 	original_assignment_name: string;
 	original_quiz_id: number;
 	workflow_state: workflow_state;
-}
-
-export default async function apiRequest(query: string) {
-	const installation = getInstallationURL();
-	const token = getToken();
-
-	const request = await fetch("/graphql", {
-		body: query,
-		headers: {
-			authorization: `Bearer ${token}`,
-			installation
-		},
-		method: "POST"
-	});
-
-	const data = await request.json();
-
-	return data;
 }

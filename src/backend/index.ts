@@ -15,7 +15,7 @@ server.register(fastifyStatic, {
 	root: join(process.cwd(), "dist/frontend/assets")
 });
 
-server.get("/", (_, reply) => {
+server.get("*", (_, reply) => {
 	reply.type("text/html");
 	return readFileSync(join(process.cwd(), "dist/frontend/index.html"));
 });

@@ -1,3 +1,5 @@
+import { hasCredentials } from "../api/api";
+
 function missingFields() {
 	const dialog = document.getElementById("dialog");
 
@@ -96,24 +98,4 @@ export function ensureAuthorized() {
 	document.body.appendChild(dialog);
 
 	return false;
-}
-
-export function hasCredentials() {
-	return "token" in localStorage && "installation" in localStorage;
-}
-
-export function getInstallationURL() {
-	if (!localStorage["installation"]) {
-		return false;
-	}
-
-	return localStorage["installation"];
-}
-
-export function getToken() {
-	if (!localStorage["token"]) {
-		return false;
-	}
-
-	return localStorage["token"];
 }

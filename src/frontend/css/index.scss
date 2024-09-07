@@ -7,27 +7,19 @@
 
 	--background-color: #1B1C2C;
 	--background-color-lighter: #27283F;
+	--background-color-lightest: #373753;
 
 	--text-color: #F6F6FD;
 
-	--select-color: #2167D6;
-	--select-color-darker: #093FAA;
+	--select-color: #8381F0;
+	--select-color-darker: #5E5CD6;
 
-	--alert-color: #BD4B3F;
-	--alert-color-darker: #a83124;
+	--alert-color: #D9776D;
+	--alert-color-darker: #FF7565;
 }
 
 * {
 	margin: 0;
-}
-
-button {
-	border: none;
-	border-radius: 10px;
-	color: var(--text-color);
-	padding: 0.8em 1em;
-	transition: 400ms background-color;
-	user-select: auto;
 }
 
 body {
@@ -37,6 +29,33 @@ body {
 	font-family: "Inter", sans-serif;
 	height: 100vh;
 	height: 100lvh;
+}
+
+button {
+	--button-background-color: var(--background-color-lighter);
+	--button-background-color-hover: var(--background-color-lightest);
+	--button-foreground-color: var(--text-color);
+
+	background-color: var(--button-background-color);
+	border: none;
+	border-radius: 10px;
+	color: var(--button-foreground-color);
+	padding: 0.8em 1em;
+	transition: 400ms background-color;
+	user-select: auto;
+}
+
+button:hover {
+	background-color: var(--button-background-color-hover);
+}
+
+a {
+	color: #6EA8FE;
+	transition: 400ms color;
+}
+
+a:hover {
+	color: #88B4F5;
 }
 
 input {
@@ -57,29 +76,13 @@ input:focus {
 }
 
 button.continue {
-	--background-color: var(--select-color);
-	--background-color-hover: var(--select-color-darker);
-	--foreground-color: white;
-
-	background-color: var(--background-color);
-	color: var(--foreground-color);
-}
-
-button.continue:hover {
-	background-color: var(--background-color-hover);
+	--button-background-color: var(--select-color);
+	--button-background-color-hover: var(--select-color-darker);
 }
 
 button.danger {
-	--background-color: var(--alert-color);
-	--background-color-hover: var(--alert-color-darker);
-	--foreground-color: white;
-
-	background-color: var(--background-color);
-	color: var(--foreground-color);
-}
-
-button.danger:hover {
-	background-color: var(--background-color-hover);
+	--button-background-color: var(--alert-color);
+	--button-background-color-hover: var(--alert-color-darker);
 }
 
 button.outline {
@@ -91,6 +94,10 @@ button.outline {
 
 button.outline:hover {
 	background-color: transparent;
-	border-color: var(--background-color);
-	color: var(--background-color);
+	border-color: var(--button-background-color-hover);
+	color: var(--button-background-color-hover);
+}
+
+.back-button {
+	margin: 2em;
 }

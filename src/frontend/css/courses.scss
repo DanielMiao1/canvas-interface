@@ -16,7 +16,7 @@ body {
 }
 
 #courses.scrolled {
-	padding-top: 1.5em;
+	padding-top: 3em;
 }
 
 .course {
@@ -110,6 +110,7 @@ body {
 .assignment-info-header {
 	display: grid;
 	grid-template-columns: auto auto;
+	text-align: center;
 	width: 80%;
 }
 

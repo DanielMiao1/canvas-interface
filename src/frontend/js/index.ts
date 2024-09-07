@@ -1,55 +1,36 @@
-import showAssignments from "./assignments";
-import showCourses from "./courses";
-
-import { type Course, type Assignment } from "./api";
-import apiRequest from "./api";
+import createBackButton from "./components/back_button";
+import dashboardView from "./views/dashboard/dashboard";
+import urlMatches from "./routing";
 
 import "../css/index.scss";
 
 import {
 	ensureAuthorized,
-} from "./authorization";
+} from "./views/authorization";
 
-function dashboardView() {
-	apiRequest(`
-		query courseData {
-			allCourses {
-				_id
-				name
-				assignmentsConnection {
-					nodes {
-						dueAt
-						name
-						_id
-						courseId
-						submissionTypes
-						allowedExtensions
-						description
-					}
-				}
-			}
-		}
-	`).then(async (
-		data: {
-			allCourses: Course[]
-		}
-	) => {
-		void import("../css/courses.scss");
+function fileNotFoundView() {
+	void import("../css/404.scss");
 
-		const courses = data.allCourses;
+	createBackButton();
 
-		showCourses(courses);
+	const container = document.createElement("div");
+	container.classList.add("container");
 
-		const assignments: Assignment[] = [];
+	const title = document.createElement("h1");
+	title.innerText = "404";
+	container.appendChild(title);
 
-		for (const course of courses) {
-			assignments.push(...course.assignmentsConnection.nodes);
-		}
+	const description = document.createElement("p");
+	description.innerText = "The requested path was not found.";
+	container.appendChild(description);
 
-		showAssignments(assignments, courses);
-	});
+	document.body.appendChild(container);
 }
 
 if (ensureAuthorized()) {
-	dashboardView();
+	if (urlMatches(/^\/$/)) {
+		dashboardView();
+	} else {
+		fileNotFoundView();
+	}
 }

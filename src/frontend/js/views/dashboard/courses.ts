@@ -1,6 +1,6 @@
-import scrollListener from "./scroll";
+import scrollListener from "../../scroll";
 
-import { type Course } from "./api";
+import { type Course } from "../../api/types";
 
 function createCourseElement(course: Course) {
 	const container = document.getElementById("courses");
@@ -9,6 +9,10 @@ function createCourseElement(course: Course) {
 	card.classList.add("course");
 	card.title = `Course ${course._id}`;
 	card.innerText = course.name;
+
+	card.addEventListener("click", () => {
+		document.location = `/course/${course._id}`;
+	})
 	
 	container?.appendChild(card);
 }
