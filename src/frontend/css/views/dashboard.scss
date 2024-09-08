@@ -1,4 +1,5 @@
-@use "list";
+@use "../components/assignment_list";
+@use "../components/list";
 
 body {
 	display: grid;
@@ -19,7 +20,7 @@ body {
 	transition: padding-top 400ms;
 }
 
-#courses.scrolled {
+body.scrolled #courses {
 	padding-top: 3em;
 }
 
@@ -43,21 +44,4 @@ body {
 	gap: 2em;
 	margin-top: 24rem;
 	padding-bottom: 10em;
-}
-
-.list-expansion {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-}
-
-.assignment-info {
-	display: grid;
-	grid-template-columns: auto auto;
-	width: 80%;
-}
-
-.assignment-description {
-	font-family: "JetBrains Mono", monospace;
 }

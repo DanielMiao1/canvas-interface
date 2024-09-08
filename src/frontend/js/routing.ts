@@ -1,4 +1,4 @@
-import { fragmentate } from "./text";
+import { fragmentate } from "./util/text/fragmentation";
 
 export function fragmentateUrl(query_string: string) {
 	const url = document.location.pathname;

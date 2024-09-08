@@ -1,0 +1,31 @@
+@use "../components/assignment_list";
+@use "../components/list";
+
+body {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+h1 {
+	background: linear-gradient(to bottom, var(--background-color) 70%, transparent 100%);
+	font-size: 3em;
+	padding: 3em 0 2.5em;
+	position: fixed;
+	text-align: center;
+	transition: padding-top 400ms;
+	width: 100%;
+}
+
+body.scrolled h1 {
+	padding-top: 1em;
+}
+
+#modules {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+	margin-top: 24em;
+	padding-bottom: 10em;
+}

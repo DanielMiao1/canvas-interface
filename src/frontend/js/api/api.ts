@@ -1,4 +1,4 @@
-import { deFragmentate } from "../text";
+import { deFragmentate } from "../util/text/fragmentation";
 
 export function hasCredentials() {
 	return "token" in localStorage && "installation" in localStorage;

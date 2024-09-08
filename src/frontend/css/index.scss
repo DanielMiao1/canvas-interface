@@ -1,4 +1,5 @@
-@use "dialog";
+@use "components/button";
+@use "components/dialog";
 
 :root {
 	--accent-color: #5B61BE;
@@ -31,24 +32,6 @@ body {
 	height: 100lvh;
 }
 
-button {
-	--button-background-color: var(--background-color-lighter);
-	--button-background-color-hover: var(--background-color-lightest);
-	--button-foreground-color: var(--text-color);
-
-	background-color: var(--button-background-color);
-	border: none;
-	border-radius: 10px;
-	color: var(--button-foreground-color);
-	padding: 0.8em 1em;
-	transition: 400ms background-color;
-	user-select: auto;
-}
-
-button:hover {
-	background-color: var(--button-background-color-hover);
-}
-
 a {
 	color: #6EA8FE;
 	transition: 400ms color;
@@ -75,32 +58,10 @@ input:focus {
 	border: 2px solid var(--select-color-darker);
 }
 
-button.continue {
-	--button-background-color: var(--select-color);
-	--button-background-color-hover: var(--select-color-darker);
-}
-
-button.danger {
-	--button-background-color: var(--alert-color);
-	--button-background-color-hover: var(--alert-color-darker);
-}
-
-button.outline {
-	background-color: transparent;
-	border: 2px solid black;
-	color: black;
-	transition: border-color 300ms, color 300ms;
-}
-
-button.outline:hover {
-	background-color: transparent;
-	border-color: var(--button-background-color-hover);
-	color: var(--button-background-color-hover);
-}
-
 .back-button {
 	left: 0;
 	margin: 2em;
-	position: absolute;
+	position: fixed;
 	top: 0;
+	z-index: 1;
 }

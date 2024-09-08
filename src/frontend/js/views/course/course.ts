@@ -1,4 +1,5 @@
 import apiRequest from "../../api/api";
+import attachScrollThreshold from "../../scroll";
 import createBackButton from "../../components/back_button";
 import showModules from "./modules";
 
@@ -7,7 +8,7 @@ import { fragmentateUrl } from "../../routing";
 import course_query, { type CourseQueryData } from "../../graphql/course";
 
 export default async function courseView() {
-	import("../../../css/course.scss").catch(() => {
+	import("../../../css/views/course.scss").catch(() => {
 		console.error("Failed to load css file");
 	});
 
@@ -28,6 +29,8 @@ export default async function courseView() {
 
 	const title = document.createElement("h1");
 	title.innerText = data.name;
+
+	attachScrollThreshold();
 
 	document.body.appendChild(title);
 

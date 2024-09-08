@@ -19,7 +19,7 @@ function listItemClick(
 	expander_function: item_expander_function
 ) {
 	if (element.classList.contains("expanded")) {
-		if (element.children[1]) {
+		if (element.children.length > 1) {
 			element.children[1].remove();
 		}
 
@@ -28,7 +28,7 @@ function listItemClick(
 	}
 
 	for (const expansion of document.getElementsByClassName("expanded")) {
-		if (expansion.children[1]) {
+		if (expansion.children.length > 1) {
 			expansion.children[1].remove();
 		}
 
@@ -58,7 +58,7 @@ export default function createList(container: HTMLElement, data: ListData) {
 
 		if (item.data) {
 			for (const [name, value] of Object.entries(item.data)) {
-				element.dataset[name] = value
+				element.dataset[name] = value;
 			}
 		}
 
@@ -69,7 +69,7 @@ export default function createList(container: HTMLElement, data: ListData) {
 			const expander_function = item.expander_function;
 
 			title_bar.addEventListener("click", () => {
-				listItemClick(element, expander_function)
+				listItemClick(element, expander_function);
 			});
 		}
 
@@ -91,4 +91,6 @@ export default function createList(container: HTMLElement, data: ListData) {
 	}
 
 	container.appendChild(list);
+
+	return list;
 }

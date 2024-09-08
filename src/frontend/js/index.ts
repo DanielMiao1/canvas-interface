@@ -11,7 +11,7 @@ import {
 } from "./views/authorization";
 
 function fileNotFoundView() {
-	import("../css/404.scss").catch(() => {
+	import("../css/views/404.scss").catch(() => {
 		console.error("Failed to load css file");
 	});
 

@@ -1,4 +1,4 @@
-import { type assignment_submission_type } from "../api/types";
+import { type MinimalAssignmentData } from "../components/assignment_list";
 
 const dashboard_query = `
 	query listCourses {
@@ -20,15 +20,7 @@ const dashboard_query = `
 	}
 `;
 
-export interface AssignmentDataFragment {
-	_id: string;
-	allowedExtensions: string[];
-	courseId: string;
-	description: string | null;
-	dueAt?: string;
-	name?: string;
-	submissionTypes: assignment_submission_type[];
-}
+export interface AssignmentDataFragment extends MinimalAssignmentData { };
 
 export interface CourseDataFragment {
 	_id: string;

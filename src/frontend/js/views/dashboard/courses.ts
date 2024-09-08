@@ -1,4 +1,4 @@
-import scrollListener from "../../scroll";
+import attachScrollThreshold from "../../scroll";
 
 import { type CourseDataFragment } from "../../graphql/dashboard";
 
@@ -24,33 +24,7 @@ export default function showCourses(courses: CourseDataFragment[]) {
 		document.body.appendChild(container);
 	}
 
-	scrollListener((y: number, last_y: number) => {
-		const container = document.getElementById("courses");
-
-		if (!container) {
-			return;
-		}
-
-		if (y < last_y) {
-			if (y < 200) {
-				if (container.classList.contains("scrolled")) {
-					container.classList.remove("scrolled");
-				}
-
-				return;
-			}
-		}
-
-		if (y > 1) {
-			if (!container.classList.contains("scrolled")) {
-				container.classList.add("scrolled");
-			}
-		} else {
-			if (container.classList.contains("scrolled")) {
-				container.classList.remove("scrolled");
-			}
-		}
-	});
+	attachScrollThreshold();
 
 	for (const course of courses) {
 		createCourseElement(course);

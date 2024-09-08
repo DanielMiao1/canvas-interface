@@ -1,3 +1,5 @@
+import { type MinimalAssignmentData } from "../components/assignment_list";
+
 const course_query = `
 	query courseData {
 		course(id: [courseId]) {
@@ -8,9 +10,13 @@ const course_query = `
 					moduleItems {
 						content {
 							... on Assignment {
+								dueAt
 								name
 								_id
-								dueAt
+								courseId
+								submissionTypes
+								allowedExtensions
+								description
 							}
 						}
 					}
@@ -20,11 +26,7 @@ const course_query = `
 	}
 `;
 
-export interface ModuleContentDataFragment {
-	name?: string;
-	_id?: string;
-	dueAt?: string;
-}
+export interface ModuleContentDataFragment extends MinimalAssignmentData { }
 
 export interface ModuleItemsDataFragment {
 	content: ModuleContentDataFragment;

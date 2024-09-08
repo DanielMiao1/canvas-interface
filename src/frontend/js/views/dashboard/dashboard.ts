@@ -8,7 +8,7 @@ import dashboard_query, {
 } from "../../graphql/dashboard";
 
 export default async function dashboardView() {
-	import("../../../css/dashboard.scss").catch(() => {
+	import("../../../css/views/dashboard.scss").catch(() => {
 		console.error("Failed to load css file");
 	});
 

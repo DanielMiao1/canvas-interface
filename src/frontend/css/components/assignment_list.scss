@@ -1,0 +1,21 @@
+.assignment-list .list-expansion {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.assignment-info {
+	display: flex;
+	flex-direction: row;
+	width: 80%;
+}
+
+.assignment-info > * {
+	flex: 1;
+}
+
+.assignment-description {
+	font-family: "JetBrains Mono", monospace;
+	max-width: 80%;
+}
