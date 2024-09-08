@@ -1,6 +1,8 @@
+import courseView from "./views/course/course";
 import createBackButton from "./components/back_button";
 import dashboardView from "./views/dashboard/dashboard";
-import urlMatches from "./routing";
+
+import { urlMatches } from "./routing";
 
 import "../css/index.scss";
 
@@ -29,12 +31,18 @@ function fileNotFoundView() {
 	document.body.appendChild(container);
 }
 
-if (ensureAuthorized()) {
+async function route() {
 	if (urlMatches(/^\/$/)) {
-		dashboardView().catch(() => {
-			console.error("Dashboard failed to load");
-		});
+		await dashboardView();
+	} else if (urlMatches(/^\/course\/\d+$/)) {
+		await courseView();
 	} else {
 		fileNotFoundView();
 	}
+}
+
+if (ensureAuthorized()) {
+	route().catch(() => {
+		throw new Error("Failed to load view for current page.");
+	});
 }

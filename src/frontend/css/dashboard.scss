@@ -1,18 +1,20 @@
 body {
 	display: grid;
 	grid-template-rows: min-content auto;
+	justify-items: center;
 }
 
 #courses {
 	align-items: center;
 	background: linear-gradient(to bottom, var(--background-color) 70%, transparent 100%);
 	display: flex;
+	flex-wrap: wrap;
 	gap: 5em;
 	justify-content: center;
-	padding: 9em 0;
+	max-width: 100%;
+	padding: 9em 15%;
 	position: fixed;
 	transition: padding-top 400ms;
-	width: 100%;
 }
 
 #courses.scrolled {

@@ -2,17 +2,17 @@ import apiRequest from "../../api/api";
 import showAssignments from "./assignments";
 import showCourses from "./courses";
 
-import dashboardQuery, {
+import dashboard_query, {
 	type AssignmentDataFragment,
 	type DashboardQueryData
 } from "../../graphql/dashboard";
 
 export default async function dashboardView() {
-	import("../../../css/courses.scss").catch(() => {
+	import("../../../css/dashboard.scss").catch(() => {
 		console.error("Failed to load css file");
 	});
 
-	const data = await apiRequest(dashboardQuery) as DashboardQueryData;
+	const data = await apiRequest(dashboard_query) as DashboardQueryData;
 
 	const courses = data.allCourses;
 

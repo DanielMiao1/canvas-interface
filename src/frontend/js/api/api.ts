@@ -1,3 +1,5 @@
+import { deFragmentate } from "../text";
+
 export function hasCredentials() {
 	return "token" in localStorage && "installation" in localStorage;
 }
@@ -18,7 +20,10 @@ export function getToken() {
 	return localStorage.token as string;
 }
 
-export default async function apiRequest(query: string) {
+export default async function apiRequest(
+	query: string,
+	variables: Record<string, string> = {}
+) {
 	const installation = getInstallationURL();
 	const token = getToken();
 
@@ -27,7 +32,7 @@ export default async function apiRequest(query: string) {
 	}
 
 	const request = await fetch("/graphql", {
-		body: query,
+		body: deFragmentate(query, variables),
 		headers: {
 			authorization: `Bearer ${token}`,
 			installation

@@ -1,7 +1,7 @@
 import { type assignment_submission_type } from "../api/types";
 
-const dashboardQuery = `
-	query courseData {
+const dashboard_query = `
+	query listCourses {
 		allCourses {
 			_id
 			name
@@ -42,4 +42,4 @@ export interface DashboardQueryData {
 	allCourses: CourseDataFragment[];
 }
 
-export default dashboardQuery;
+export default dashboard_query;
