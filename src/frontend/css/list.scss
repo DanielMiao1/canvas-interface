@@ -1,0 +1,49 @@
+.list {
+	background-color: var(--background-color-lighter);
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+	padding: 1.4em 1em;
+	width: min(120em, 70vw);
+}
+
+.list-title {
+	font-weight: bold;
+}
+
+.list-item {
+	border-radius: 16px;
+	font-size: 0.9em;
+	transition: font-weight 200ms, background-color 300ms;
+}
+
+.list-item:hover {
+	background-color: var(--accent-color);
+}
+
+.list-item.expanded {
+	background-color: var(--accent-color-darker);
+}
+
+.list-title,
+.list-item-title {
+	padding: 2rem 1.4rem;
+}
+
+.list-item-title {
+	display: flex;
+	flex-direction: row;
+}
+
+.list-item.expanded .list-item-title {
+	font-weight: bold;
+}
+
+.list-secondary-title {
+	margin-left: auto;
+}
+
+.list-expansion {
+	padding: 2rem 1.4rem;
+	text-align: center;
+}

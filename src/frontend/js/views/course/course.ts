@@ -1,5 +1,6 @@
 import apiRequest from "../../api/api";
 import createBackButton from "../../components/back_button";
+import showModules from "./modules";
 
 import { fragmentateUrl } from "../../routing";
 
@@ -29,4 +30,6 @@ export default async function courseView() {
 	title.innerText = data.name;
 
 	document.body.appendChild(title);
+
+	showModules(data.modulesConnection.nodes);
 }

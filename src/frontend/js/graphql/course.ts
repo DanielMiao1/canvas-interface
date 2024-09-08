@@ -20,17 +20,19 @@ const course_query = `
 	}
 `;
 
-export interface ModuleItemDataFragment {
+export interface ModuleContentDataFragment {
 	name?: string;
 	_id?: string;
 	dueAt?: string;
 }
 
+export interface ModuleItemsDataFragment {
+	content: ModuleContentDataFragment;
+}
+
 export interface ModuleDataFragment {
 	name: string;
-	moduleItems: {
-		content: ModuleItemDataFragment[];
-	};
+	moduleItems: ModuleItemsDataFragment[];
 }
 
 export interface CourseDataFragment {

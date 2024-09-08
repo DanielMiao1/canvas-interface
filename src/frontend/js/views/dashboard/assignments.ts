@@ -1,6 +1,10 @@
 import { dateNumber, formatTime, timestampOf } from "../../time";
 import { isHTML, stringifyList, titleCase } from "../../text";
 
+import createList from "../../components/list";
+
+import { type ListItemData } from "../../components/list";
+
 import {
 	type AssignmentDataFragment,
 	type CourseDataFragment
@@ -82,148 +86,20 @@ function formatSubmissionType(
 	return titleCase(result);
 }
 
-function ensureUnknownTimeContainer() {
-	if (!document.getElementById("unknown-time-assignment-container")) {
-		const container = document.getElementById("assignments");
+function formatSubmissionDataTooltip(
+	types: assignment_submission_type[], formats: string[]
+) {
+	let tooltip = `Submission methods: ${stringifyList(types)}`;
 
-		const element = document.createElement("div");
-		element.id = "unknown-time-assignment-container";
-		element.classList.add("assignment-date-container");
-
-		const title = document.createElement("p");
-		title.innerText = "Unknown Due Date";
-		title.classList.add("assignment-container-title");
-		element.appendChild(title);
-
-		container?.children[1].after(element);
-	}
-}
-
-function appendUnknownTimeAssignment(assignment_element: HTMLElement) {
-	ensureUnknownTimeContainer();
-
-	const unknown_time_container = document.getElementById("unknown-time-assignment-container");
-	unknown_time_container?.appendChild(assignment_element);
-}
-
-function createTimeContainers(): HTMLElement[] {
-	const container = document.getElementById("assignments");
-
-	const earlier_container = document.createElement("div");
-	earlier_container.classList.add("assignment-date-container");
-
-	const earlier_title = document.createElement("p");
-	earlier_title.innerText = "Earlier";
-	earlier_title.classList.add("assignment-container-title");
-	earlier_container.appendChild(earlier_title);
-
-	container?.appendChild(earlier_container);
-
-	const today_container = document.createElement("div");
-	today_container.classList.add("assignment-date-container");
-
-	const today_title = document.createElement("p");
-	today_title.innerText = "Due Today";
-	today_title.classList.add("assignment-container-title");
-	today_container.appendChild(today_title);
-
-	container?.appendChild(today_container);
-
-	const upcoming_container = document.createElement("div");
-	upcoming_container.classList.add("assignment-date-container");
-
-	const upcoming_title = document.createElement("p");
-	upcoming_title.innerText = "Upcoming";
-	upcoming_title.classList.add("assignment-container-title");
-	upcoming_container.appendChild(upcoming_title);
-
-	container?.appendChild(upcoming_container);
-
-	return [earlier_container, today_container, upcoming_container];
-}
-
-function collapseExpandedAssignment() {
-	const expanded_element = document.getElementById("assignment-info");
-	if (expanded_element) {
-		expanded_element.remove();
-	}
-}
-
-function renderDescriptionHTML(html: string) {
-	const description = document.getElementById("assignment-description");
-
-	if (description) {
-		description.innerHTML = html;
-	}
-}
-
-function expandAssignmentInfo(assignment_element: HTMLDivElement) {
-	collapseExpandedAssignment();
-
-	const data_id = assignment_element.getAttribute("data-id");
-	if (!data_id) {
-		return;
-	}
-
-	const data = assignment_data[data_id];
-
-	const info_element = document.createElement("div");
-	info_element.id = "assignment-info";
-
-	const info_header = document.createElement("div");
-	info_header.classList.add("assignment-info-header");
-
-	const course_id = data.courseId;
-	const course_name = course_names[course_id];
-
-	const course_name_element = document.createElement("p");
-	course_name_element.innerText = `Course: ${course_name}`;
-	info_header.appendChild(course_name_element);
-
-	const submission_types = data.submissionTypes;
-	const submission_formats = data.allowedExtensions;
-
-	const submission_types_element = document.createElement("p");
-	submission_types_element.innerText = formatSubmissionType(
-		submission_types, submission_formats
-	);
-
-	let submission_types_tooltip = `Submission methods: ${stringifyList(submission_types)}`;
-
-	if (Array.isArray(submission_formats)) {
-		if (submission_formats.length > 0) {
-			submission_types_tooltip += `\nAccepted formats (for file uploads): ${stringifyList(submission_formats)}`;
+	if (Array.isArray(formats)) {
+		if (formats.length > 0) {
+			tooltip += `\nAccepted file formats: ${stringifyList(formats)}`;
 		} else {
-			submission_types_tooltip += "\nNo file formats provided";
+			tooltip += "\nNo file formats provided";
 		}
 	}
 
-	submission_types_element.title = submission_types_tooltip;
-	info_header.appendChild(submission_types_element);
-
-	info_element.appendChild(info_header);
-
-	if (data.description) {
-		const description_element = document.createElement("p");
-		description_element.id = "assignment-description";
-		description_element.innerText = data.description;
-		info_element.appendChild(description_element);
-
-		if (isHTML(data.description)) {
-			const show_html = document.createElement("button");
-			show_html.classList.add("outline", "danger");
-			show_html.innerText = "Render HTML";
-
-			show_html.addEventListener("click", () => {
-				renderDescriptionHTML(data.description);
-				show_html.remove();
-			});
-
-			info_element.appendChild(show_html);
-		}
-	}
-
-	assignment_element.appendChild(info_element);
+	return tooltip;
 }
 
 function sortAssignmentDueDate(
@@ -241,6 +117,64 @@ function sortAssignmentDueDate(
 	return timestampOf(a.dueAt) - timestampOf(b.dueAt);
 }
 
+function getCourseName(id: string) {
+	return course_names[id];
+}
+
+function expandAssignment(expansion_container: HTMLDivElement) {
+	const list_item = expansion_container.parentNode as HTMLElement;
+	const assignment_id = list_item.dataset.id;
+
+	if (!assignment_id) {
+		return;
+	}
+
+	const data = assignment_data[assignment_id];
+
+	const info_row = document.createElement("div");
+	info_row.classList.add("assignment-info");
+	
+	const course_name = getCourseName(data.courseId);
+
+	const course_name_element = document.createElement("p");
+	course_name_element.innerText = `Course: ${course_name}`;
+	info_row.appendChild(course_name_element);
+
+	const submission_types_element = document.createElement("p");
+	submission_types_element.innerText = formatSubmissionType(
+		data.submissionTypes, data.allowedExtensions
+	);
+
+	submission_types_element.title = formatSubmissionDataTooltip(
+		data.submissionTypes, data.allowedExtensions
+	);
+
+	info_row.appendChild(submission_types_element);
+	expansion_container.appendChild(info_row);
+
+	if (data.description) {
+		const description = data.description;
+
+		const description_element = document.createElement("p");
+		description_element.innerText = description;
+		description_element.classList.add("assignment-description");
+		expansion_container.appendChild(description_element);
+
+		if (isHTML(description)) {
+			const html_button = document.createElement("button");
+			html_button.classList.add("outline", "danger");
+			html_button.innerText = "Render HTML";
+
+			html_button.addEventListener("click", () => {
+				description_element.innerHTML = description;
+				html_button.remove();
+			});
+
+			expansion_container.appendChild(html_button);
+		}
+	}
+}
+
 export default function showAssignments(
 	assignments: AssignmentDataFragment[],
 	courses: CourseDataFragment[]
@@ -253,65 +187,58 @@ export default function showAssignments(
 	container.id = "assignments";
 	document.body.appendChild(container);
 
-	const [
-		earlier_container, today_container, upcoming_container
-	] = createTimeContainers();
+	const earlier_assignments = [];
+	const today_assignments = [];
+	const unknown_time_assignments = [];
+	const upcoming_assignments = [];
 
 	for (const assignment of assignments.sort(sortAssignmentDueDate)) {
-		assignment_data[assignment._id.toString()] = assignment;
+		assignment_data[assignment._id] = assignment;
 
-		const element = document.createElement("div");
-		element.classList.add("assignment");
-		element.setAttribute("data-id", assignment._id.toString());
-		element.title = `Assignment ${assignment._id}`;
-
-		const assignment_title = document.createElement("div");
-		assignment_title.classList.add("assignment-title");
-		assignment_title.addEventListener("click", () => {
-			if (element.children.length > 1) {
-				collapseExpandedAssignment();
-			} else {
-				expandAssignmentInfo(element);
-			}
-		});
-
-		const description_element = document.createElement("p");
-		description_element.classList.add("description");
-
-		if (assignment.name) {
-			description_element.innerText = assignment.name;
-		} else {
-			description_element.innerText = "<No Description>";
+		const list_item_data: ListItemData = {
+			data: {
+				id: assignment._id
+			},
+			expandable: true,
+			expander_function: expandAssignment,
+			primary_title: assignment.name ?? "Unnamed Assignment",
+			tooltip: `Assignment ${assignment._id}`
 		}
 
-		assignment_title.appendChild(description_element);
+		const due_date = assignment.dueAt;
 
-		const due_at_element = document.createElement("p");
-		due_at_element.classList.add("due-at");
+		if (due_date) {
+			list_item_data.secondary_title = formatTime(due_date);
 
-		if (assignment.dueAt) {
-			due_at_element.innerText = formatTime(assignment.dueAt);
-		} else {
-			due_at_element.innerText = "Unknown";
-		}
+			const due_date_number = dateNumber(due_date);
+			const current_date_number = dateNumber();
 
-		assignment_title.appendChild(due_at_element);
-
-		element.appendChild(assignment_title);
-
-		if (assignment.dueAt) {
-			const due_date = dateNumber(assignment.dueAt);
-			const current_date = dateNumber();
-
-			if (due_date < current_date) {
-				earlier_container.appendChild(element);
-			} else if (due_date === current_date) {
-				today_container.appendChild(element);
+			if (due_date_number < current_date_number) {
+				earlier_assignments.push(list_item_data);
+			} else if (due_date_number === current_date_number) {
+				today_assignments.push(list_item_data);
 			} else {
-				upcoming_container.appendChild(element);
+				upcoming_assignments.push(list_item_data);
 			}
 		} else {
-			appendUnknownTimeAssignment(element);
+			unknown_time_assignments.push(list_item_data);
 		}
 	}
+
+	// TODO: implement unknown time container;
+
+	createList(container, {
+		title: "Earlier",
+		items: earlier_assignments
+	});
+
+	createList(container, {
+		title: "Today",
+		items: today_assignments
+	});
+
+	createList(container, {
+		title: "Upcoming",
+		items: upcoming_assignments
+	});
 }

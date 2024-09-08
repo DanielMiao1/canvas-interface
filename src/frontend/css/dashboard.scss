@@ -1,3 +1,5 @@
+@use "list";
+
 body {
 	display: grid;
 	grid-template-rows: min-content auto;
@@ -43,79 +45,19 @@ body {
 	padding-bottom: 10em;
 }
 
-.assignment-date-container {
-	background-color: var(--background-color-lighter);
-	border-radius: 12px;
-	display: flex;
-	flex-direction: column;
-	padding: 1.4em 1em;
-	width: min(120em, 70vw);
-}
-
-.assignment-container-title,
-.assignment > div {
-	padding: 2rem 1.4rem;
-}
-
-.assignment-container-title {
-	font-weight: bold;
-	transition: text-shadow 400ms;
-}
-
-.assignment-date-container:has(.assignment:hover) .assignment-container-title,
-.assignment-date-container:has(#assignment-info) .assignment-container-title {
-	text-shadow: 0 0 2em #0006;
-}
-
-.assignment {
-	border-radius: 16px;
-	font-size: 0.9em;
-	padding: 0;
-	transition: font-weight 400ms, background-color 300ms;
-}
-
-.assignment:hover {
-	background-color: var(--accent-color-lighter);
-}
-
-.assignment:has(#assignment-info) {
-	background-color: var(--accent-color-darker);
-	transition: font-weight 200ms;
-}
-
-.assignment-title {
-	display: grid;
-	grid-template-columns: auto 10em;
-}
-
-.assignment:has(#assignment-info) .assignment-title {
-	font-weight: bold;
-}
-
-.due-at {
-	text-align: right;
-}
-
-#assignment-info {
+.list-expansion {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
-	font-weight: normal;
 	gap: 2rem;
-	padding-top: 2rem;
 }
 
-.description {
-	text-align: left;
-}
-
-.assignment-info-header {
+.assignment-info {
 	display: grid;
 	grid-template-columns: auto auto;
-	text-align: center;
 	width: 80%;
 }
 
-#assignment-description {
+.assignment-description {
 	font-family: "JetBrains Mono", monospace;
 }
