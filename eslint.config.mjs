@@ -39,10 +39,7 @@ export default tseslint.config(
 			"@stylistic/no-tabs": "off",
 			"@stylistic/operator-linebreak": ["error", "after"],
 			"@stylistic/quotes": ["error", "double"],
-			"@stylistic/semi": ["error", "always"],
-			"@typescript-eslint/no-empty-object-type": ["error", {
-				allowInterfaces: "with-single-extends"
-			}]
+			"@stylistic/semi": ["error", "always"]
 		}
 	}
 );

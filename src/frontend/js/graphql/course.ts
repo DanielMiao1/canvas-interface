@@ -1,3 +1,4 @@
+import { type assignment_submission_type } from "../api/types";
 import { type MinimalAssignmentData } from "../components/assignment_list";
 
 const course_query = `
@@ -26,7 +27,10 @@ const course_query = `
 	}
 `;
 
-export interface ModuleContentDataFragment extends MinimalAssignmentData { }
+export interface ModuleContentDataFragment extends MinimalAssignmentData {
+	allowedExtensions: string[];
+	submissionTypes: assignment_submission_type[];
+}
 
 export interface ModuleItemsDataFragment {
 	content: ModuleContentDataFragment;
