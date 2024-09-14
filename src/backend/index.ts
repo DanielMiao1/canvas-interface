@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import registerApiHooks from "./api.js";
 
 import { fastify } from "fastify";
+import { fastifyFormbody } from "@fastify/formbody";
 import { fastifyStatic } from "@fastify/static";
 
 const server = fastify({
@@ -14,6 +15,8 @@ server.register(fastifyStatic, {
 	prefix: "/assets",
 	root: join(process.cwd(), "dist/frontend/assets")
 });
+
+server.register(fastifyFormbody);
 
 server.get("*", (_, reply) => {
 	reply.type("text/html");

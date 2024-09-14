@@ -42,7 +42,8 @@ async function route() {
 }
 
 if (ensureAuthorized()) {
-	route().catch(() => {
+	route().catch((error: unknown) => {
+		console.error(error);
 		throw new Error("Failed to load view for current page.");
 	});
 }

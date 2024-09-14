@@ -1,7 +1,7 @@
 import createList from "./list";
+import openSubmissionDialog from "./assignment_submission";
 
 import { formatTime, timestampOf } from "../time";
-import { isHTML } from "../util/text/format";
 
 import {
 	formatSubmissionDataTooltip,
@@ -68,23 +68,20 @@ function expandAssignment(
 		const description = data.description;
 
 		const description_element = document.createElement("p");
-		description_element.innerText = description;
+		description_element.innerHTML = description;
 		description_element.classList.add("assignment-description");
 		expansion_container.appendChild(description_element);
-
-		if (isHTML(description)) {
-			const html_button = document.createElement("button");
-			html_button.classList.add("outline", "danger");
-			html_button.innerText = "Render HTML";
-
-			html_button.addEventListener("click", () => {
-				description_element.innerHTML = description;
-				html_button.remove();
-			});
-
-			expansion_container.appendChild(html_button);
-		}
 	}
+
+	const submit_button = document.createElement("button");
+	submit_button.classList.add("outline", "continue");
+	submit_button.innerText = "Begin Submission";
+
+	submit_button.addEventListener("click", () => {
+		openSubmissionDialog(data);
+	});
+
+	expansion_container.appendChild(submit_button);
 }
 
 function sortAssignmentDueDate(

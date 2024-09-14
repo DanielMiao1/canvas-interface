@@ -1,3 +1,4 @@
+import { createDialog } from "../components/dialog";
 import { hasCredentials } from "../api/api";
 
 function missingFields() {
@@ -52,8 +53,9 @@ export function ensureAuthorized() {
 		return true;
 	}
 
-	const dialog = document.createElement("div");
-	dialog.id = "dialog";
+	import("../../css/views/authorization.scss");
+
+	const dialog = createDialog();
 
 	const dialog_title = document.createElement("h1");
 	dialog_title.innerText = "Credentials";
@@ -94,8 +96,6 @@ export function ensureAuthorized() {
 	continue_button.addEventListener("click", processCredentials);
 
 	dialog.appendChild(continue_button);
-
-	document.body.appendChild(dialog);
 
 	return false;
 }

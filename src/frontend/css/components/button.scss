@@ -26,6 +26,10 @@ button.danger {
 	--button-background-color-hover: var(--alert-color-darker);
 }
 
+button.outline.continue {
+	--button-background-color-hover: var(--select-color-lightest);
+}
+
 button.outline {
 	background-color: transparent;
 	border: 2px solid var(--text-color);

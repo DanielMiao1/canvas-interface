@@ -1,5 +1,5 @@
 const weekdays = [
-	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 ];
 
 const abbreviated_months = [
@@ -14,7 +14,7 @@ export function timestampOf(time: string): number {
 export function formatTime(time: string): string {
 	const date = new Date(time);
 
-	const weekday = weekdays[date.getDay() - 1];
+	const weekday = weekdays[date.getDay()];
 	const month = abbreviated_months[date.getMonth()];
 	const day = date.getDate().toString();
 

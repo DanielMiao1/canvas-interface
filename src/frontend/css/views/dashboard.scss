@@ -14,10 +14,10 @@ body {
 	flex-wrap: wrap;
 	gap: 5em;
 	justify-content: center;
-	max-width: 100%;
-	padding: 9em 15%;
+	padding: 9em 1em;
 	position: fixed;
 	transition: padding-top 400ms;
+	width: min(120em, 70vw);
 }
 
 body.scrolled #courses {
@@ -34,7 +34,7 @@ body.scrolled #courses {
 }
 
 .course:hover {
-	background-color: var(--accent-color-lighter);
+	background-color: var(--accent-color-darker);
 }
 
 #assignments {

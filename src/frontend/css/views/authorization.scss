@@ -1,0 +1,13 @@
+.dialog p,
+.dialog button {
+	margin-top: 1em;
+}
+
+.dialog input.missing {
+	outline: solid 1px var(--accent-color);
+}
+
+.alert {
+	color: var(--alert-color);
+	font-weight: bold;
+}
