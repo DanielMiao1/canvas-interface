@@ -4,7 +4,7 @@ export function createDialog(classList?: string[], close_on_click = true) {
 
 	const dialog = document.createElement("div");
 	dialog.classList.add("dialog");
-	
+
 	if (classList) {
 		dialog.classList.add(...classList);
 	}
@@ -24,7 +24,7 @@ export function createDialog(classList?: string[], close_on_click = true) {
 
 		close_button.addEventListener("click", () => {
 			closeDialog();
-		})
+		});
 
 		dialog.appendChild(close_button);
 	}

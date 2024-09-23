@@ -53,7 +53,9 @@ export function ensureAuthorized() {
 		return true;
 	}
 
-	import("../../css/views/authorization.scss");
+	import("../../css/views/authorization.scss").catch(() => {
+		console.error("Failed to load css file");
+	});
 
 	const dialog = createDialog();
 
