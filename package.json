@@ -16,7 +16,7 @@
 	"dependencies": {
 		"@fastify/formbody": "^7.4.0",
 		"@fastify/static": "^7.0.4",
-		"@types/node": "^22.5.4",
+		"@types/node": "^22.5.5",
 		"@urql/core": "^5.0.6",
 		"fastify": "^4.28.1",
 		"sass": "^1.78.0",
