@@ -1,10 +1,10 @@
 import createAssignmentList from "../../components/assignment_list";
 
-import { dateNumber } from "../../time";
+import { dateNumber } from "../../util/time";
 
-import {
-	type AssignmentDataFragment,
-	type CourseDataFragment
+import type {
+	AssignmentDataFragment,
+	CourseDataFragment
 } from "../../graphql/dashboard";
 
 const course_names: Record<string, string> = {};

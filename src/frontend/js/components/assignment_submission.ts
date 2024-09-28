@@ -1,12 +1,27 @@
 import { createDialog } from "./dialog";
-import { formatTime } from "../time";
+import { formatSubmissionType } from "../api/format";
+import { formatTime } from "../util/time";
 
+import type { assignment_submission_type } from "../api/types";
 import type { MinimalAssignmentData } from "./assignment_list";
 
 function textEntry(dialog: HTMLDivElement) {
 	const textarea = document.createElement("textarea");
 
 	dialog.appendChild(textarea);
+}
+
+function createSubmissionTypesDropdown(types: assignment_submission_type[]) {
+	const dropdown = document.createElement("select");
+
+	for (const type of types) {
+		const option = document.createElement("option");
+		option.innerText = formatSubmissionType(type);
+
+		dropdown.appendChild(option);
+	}
+
+	return dropdown;
 }
 
 export default function openSubmissionDialog(
@@ -35,6 +50,9 @@ export default function openSubmissionDialog(
 
 	if (assignment_data.submissionTypes) {
 		const types = assignment_data.submissionTypes;
+
+		const type_dropdown = createSubmissionTypesDropdown(types);
+		dialog.appendChild(type_dropdown);
 
 		if (types.includes("online_text_entry")) {
 			textEntry(dialog);

@@ -1,6 +1,6 @@
 import createAssignmentList from "../../components/assignment_list";
 
-import { type ModuleDataFragment } from "../../graphql/course";
+import type { ModuleDataFragment } from "../../graphql/course";
 
 export default function showModules(modules: ModuleDataFragment[]) {
 	const container = document.createElement("div");

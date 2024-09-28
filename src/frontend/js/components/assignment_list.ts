@@ -1,15 +1,15 @@
 import createList from "./list";
 import openSubmissionDialog from "./assignment_submission";
 
-import { formatTime, timestampOf } from "../time";
+import { formatTime, timestampOf } from "../util/time";
 
 import {
 	formatSubmissionDataTooltip,
-	formatSubmissionType
-} from "../util/text/submission_type";
+	formatSubmissionTypes
+} from "../api/format";
 
-import { type assignment_submission_type } from "../api/types";
-import { type ListItemData } from "./list";
+import type { assignment_submission_type } from "../api/types";
+import type { ListItemData } from "./list";
 
 type course_name_function = (id: string) => string;
 
@@ -51,7 +51,7 @@ function expandAssignment(
 
 	if (data.submissionTypes) {
 		const submission_types_element = document.createElement("p");
-		submission_types_element.innerText = formatSubmissionType(
+		submission_types_element.innerText = formatSubmissionTypes(
 			data.submissionTypes, data.allowedExtensions
 		);
 

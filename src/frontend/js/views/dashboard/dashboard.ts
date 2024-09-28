@@ -1,4 +1,4 @@
-import apiRequest from "../../api/api";
+import apiRequest from "../../api/request";
 import showAssignments from "./assignments";
 import showCourses from "./courses";
 

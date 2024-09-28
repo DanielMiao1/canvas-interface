@@ -1,4 +1,4 @@
-import apiRequest from "../../api/api";
+import apiRequest from "../../api/request";
 import attachScrollThreshold from "../../scroll";
 import createBackButton from "../../components/back_button";
 import showModules from "./modules";

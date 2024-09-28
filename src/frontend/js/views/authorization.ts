@@ -1,5 +1,5 @@
 import { createDialog } from "../components/dialog";
-import { hasCredentials } from "../api/api";
+import { hasCredentials } from "../api/request";
 
 function missingFields() {
 	const dialog = document.getElementById("dialog");

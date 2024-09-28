@@ -1,6 +1,6 @@
 import attachScrollThreshold from "../../scroll";
 
-import { type CourseDataFragment } from "../../graphql/dashboard";
+import type { CourseDataFragment } from "../../graphql/dashboard";
 
 function createCourseElement(course: CourseDataFragment) {
 	const container = document.getElementById("courses");
