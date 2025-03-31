@@ -29,7 +29,7 @@
 		"@types/eslint__js": "^8.42.3",
 		"eslint": "^9.23.0",
 		"nodemon": "^3.1.9",
-		"stylelint": "^16.16.0",
+		"stylelint": "^16.17.0",
 		"stylelint-config-standard-scss": "^14.0.0",
 		"stylelint-order": "^6.0.4",
 		"tsc-watch": "^6.2.1",
